@@ -1,0 +1,2 @@
+sprites/human/idle 15;15
+sprites/human/walk 15;15
