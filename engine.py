@@ -64,7 +64,8 @@ class physics():
         hit_list = self.__test_collide(tiles, entities)
         for tile in hit_list:
             if movement[1] > 0:
-                self.rect.bottom = tile[0].top
+                if tile[1] != 'human': # Это плохая штука!
+                    self.rect.bottom = tile[0].top
                 collision_type['bottom'] = True
             if movement[1] < 0:
                 self.rect.top = tile[0].bottom
