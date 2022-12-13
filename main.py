@@ -8,8 +8,9 @@ import engine as E
 pg.init()
 E.load_animation('data/assets/')
 
-player = E.Entity('human', WIN_RES[0] // 2 - 6, WIN_RES[1] / 1.5, 13, 15)
-ground.append(pg.Rect(0, 300, 500, 100))
+
+player = E.Entity('human', WIN_RES[0] // 2 - 6, WIN_RES[1] / 1.5, 26, 30)
+
 StaminaHUD = E.Entity('StaminaHUD', 25, 25, 100, 25)
 StaminaHUD.color = (62, 162, 201)
 
@@ -24,21 +25,21 @@ for x in range(1):
             ground.append(pg.Rect(WIN_RES[0] * x, 300 - 32, 32, 32))
 
 dg = WIN_RES[0] // 100  # Это только для пола
-db = WIN_RES[0] // 32
+ds = WIN_RES[0]*3 // 320
 entity_chunks = {}
 while True:
+    display.fill('yellow')
     # World generation
+    for x in range(ds):
+        chunk = x - 1 + round(camera[0]/(320))
+        if chunk not in back_ground:
+            back_ground[chunk] = [[320*chunk,0],0]
+        display.blit(back_ground_img[back_ground[chunk][1]], (back_ground[chunk][0][0]-camera[0], back_ground[chunk][0][1]-camera[1]))
     for x in range(dg):
         t_x = x + round(camera[0] / 500) - 1
-        if pg.Rect(t_x * 500, 300, 500, 100) not in ground:
-            ground.append(pg.Rect(t_x * 500, 300, 500, 100))
-    for x in range(db): # ЭТО НАДО ПЕРЕРАБОТАТЬ!
-        chunk = x + round(camera[0] / (33))
-        t_x = camera[0] + chunk * 33
-        if chunk not in entity_chunks:
-            entity_chunks[chunk] = t_x
-            falling_blocks.append(E.Entity('falling_block', t_x, -x * 100, 32, 300))
-        print(len(falling_blocks))
+        if pg.Rect(t_x * 500, WIN_RES[1] // 1.5+20, 500, 100) not in ground:
+            ground.append(pg.Rect(t_x * 500, WIN_RES[1] // 1.5+20, 500, 100))
+
     camera[0] = player.get_pos()[0] - WIN_RES[0] // 2 + player.get_size()[0] // 2
     # Input
     if keys['right'] and can_input:
@@ -80,7 +81,8 @@ while True:
     if player_momentum >= 6:
         player_momentum = 6
     # Render and another physic logic
-    display.fill('grey')
+
+
     player.render(display, camera)
     momentum_fall += 1
     if momentum_fall > 10:
@@ -96,7 +98,7 @@ while True:
     for g in ground:  # Ground render
         if g.x - camera[0] < -1500:
             ground.remove(g)
-        pg.draw.rect(display, 'darkgreen', (g.x - camera[0], g.y - camera[1], g.width, g.height))
+        pg.draw.rect(display, 'grey', (g.x - camera[0], g.y - camera[1], g.width, g.height))
     StaminaHUD.render(display)  # HUD render
 
     surf = pg.transform.scale(display, WIN_SIZE)
