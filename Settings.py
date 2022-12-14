@@ -23,8 +23,10 @@ player_momentum = 2
 air_timer = 0
 speed = 1
 stamina = 100
-ground = []
 
+ds = WIN_RES[0]*3 // 320
+ground = []
+ground_chunks = {}
 falling_blocks = []
 momentum_fall = 0
 back_ground_img = [pg.image.load('data/assets/sprites/background_0.png').convert_alpha()]

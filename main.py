@@ -16,30 +16,29 @@ StaminaHUD.color = (62, 162, 201)
 
 for x in range(1):
     falling_blocks.append(E.Entity('falling_block', 33 * x, -x * 100, 32, 300))
-    if random.randint(0, 100) < 60:
-        if random.randint(0, 100) < 50:
-            ground.append(pg.Rect(WIN_RES[0] * x, 300 - 32, 32, 32))
-        if random.randint(0, 100) > 50:
-            ground.append(pg.Rect(WIN_RES[0] * x + 32, 300 - 32, 32, 32))
-            ground.append(pg.Rect(WIN_RES[0] * x + 32, 300 - 64, 32, 32))
-            ground.append(pg.Rect(WIN_RES[0] * x, 300 - 32, 32, 32))
 
-dg = WIN_RES[0] // 100  # Это только для пола
-ds = WIN_RES[0]*3 // 320
+
+
 entity_chunks = {}
 while True:
     display.fill('yellow')
     # World generation
     for x in range(ds):
-        chunk = x - 1 + round(camera[0]/(320))
-        if chunk not in back_ground:
-            back_ground[chunk] = [[320*chunk,0],0]
-        display.blit(back_ground_img[back_ground[chunk][1]], (back_ground[chunk][0][0]-camera[0], back_ground[chunk][0][1]-camera[1]))
-    for x in range(dg):
-        t_x = x + round(camera[0] / 500) - 1
-        if pg.Rect(t_x * 500, WIN_RES[1] // 1.5+20, 500, 100) not in ground:
-            ground.append(pg.Rect(t_x * 500, WIN_RES[1] // 1.5+20, 500, 100))
+        chunk_bg = x - 1 + round(camera[0]/(320))
+        if chunk_bg not in back_ground:
+            back_ground[chunk_bg] = [[320*chunk_bg,0],0]
+            fal_chunks = E.chunk_generation(chunk_bg, 320 / 32)
+            for i in fal_chunks:
+                #print(abs(i)//32)
+                falling_blocks.append(E.Entity('falling_block', i, -200 * abs(i)//32, 32, 300)) # PROBLEM!!
+        if chunk_bg not in ground_chunks:
+            ground_chunks[chunk_bg] = [pg.Rect(chunk_bg*320, 190, 320, 500), 0]
+            if ground_chunks[chunk_bg][0] not in ground:
+                ground.append(ground_chunks[chunk_bg][0])
 
+
+        display.blit(back_ground_img[back_ground[chunk_bg][1]], (back_ground[chunk_bg][0][0]-camera[0], back_ground[chunk_bg][0][1]-camera[1]))
+    print(len(falling_blocks))
     camera[0] = player.get_pos()[0] - WIN_RES[0] // 2 + player.get_size()[0] // 2
     # Input
     if keys['right'] and can_input:

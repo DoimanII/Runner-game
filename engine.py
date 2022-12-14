@@ -4,7 +4,12 @@ from Settings import *
 
 def get_mouse_pos():
     return (pg.mouse.get_pos()[0] // 2, pg.mouse.get_pos()[1] // 2)
-
+def chunk_generation(x, chunk_size):
+    chunk_data = []
+    for x_pos in range(int(chunk_size)):
+        t_x = (x*chunk_size+x_pos)*33 # 32 !!!
+        chunk_data.append(int(t_x))
+    return chunk_data
 
 def load_animation(path):
     global animation_higher_database
