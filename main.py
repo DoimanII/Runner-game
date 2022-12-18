@@ -9,12 +9,12 @@ pg.init()
 E.load_animation('data/assets/')
 
 
-player = E.Entity('human', WIN_RES[0] // 2 - 6, WIN_RES[1] / 1.5, 26, 30)
+player = E.Entity('human', 0, WIN_RES[1] / 1.5, 26, 30)
 
 StaminaHUD = E.Entity('StaminaHUD', 25, 25, 100, 25)
 StaminaHUD.color = (62, 162, 201)
 
-for x in range(1):
+for x in range(-1, 0):
     falling_blocks.append(E.Entity('falling_block', 33 * x, -x * 100, 32, 300))
 
 
@@ -25,30 +25,27 @@ while True:
     # World generation
     for x in range(ds):
         chunk_bg = x - 1 + round(camera[0]/(320))
-        if chunk_bg not in back_ground:
-            back_ground[chunk_bg] = [[320*chunk_bg,0],0]
-            fal_chunks = E.chunk_generation(chunk_bg, 320 / 32)
-            for i in fal_chunks:
-                #print(abs(i)//32)
-                falling_blocks.append(E.Entity('falling_block', i, -200 * abs(i)//32, 32, 300)) # PROBLEM!!
-        if chunk_bg not in ground_chunks:
-            ground_chunks[chunk_bg] = [pg.Rect(chunk_bg*320, 190, 320, 500), 0]
+
+        if chunk_bg not in back_ground: # BackGround
+            back_ground[chunk_bg] = [[320*chunk_bg,0],random.choice([0,0,0,1])]
+        if chunk_bg not in ground_chunks: # Ground
+            ground_chunks[chunk_bg] = [pg.Rect(chunk_bg*320, 190, 320, 10), 0]
             if ground_chunks[chunk_bg][0] not in ground:
                 ground.append(ground_chunks[chunk_bg][0])
 
 
+
         display.blit(back_ground_img[back_ground[chunk_bg][1]], (back_ground[chunk_bg][0][0]-camera[0], back_ground[chunk_bg][0][1]-camera[1]))
-    print(len(falling_blocks))
     camera[0] = player.get_pos()[0] - WIN_RES[0] // 2 + player.get_size()[0] // 2
     # Input
     if keys['right'] and can_input:
         player.flip_x = False
         player.action = 'walk'
-        player_movement[0] = -3 * speed
+        player_movement[0] = -2 * speed
     if keys['left'] and can_input:
         player.flip_x = True
         player.action = 'walk'
-        player_movement[0] = 3 * speed
+        player_movement[0] = 2 * speed
     if keys['up'] and can_input:
         if air_timer < 6:
             player_momentum = -6
@@ -90,6 +87,7 @@ while True:
     for falling_block in falling_blocks:  # Falling blocks render
         falling_block.render(display, camera)
         fal_tile_name, fal_collision = falling_block.obj.move([0, momentum_fall], ground, [player])
+
         if fal_tile_name['name'] == 'human':  # Здесь проблема!  #################
             can_input = False
             keys = {'up': False, 'down': False, 'right': False, 'left': False, 'run': False}
@@ -97,7 +95,7 @@ while True:
     for g in ground:  # Ground render
         if g.x - camera[0] < -1500:
             ground.remove(g)
-        pg.draw.rect(display, 'grey', (g.x - camera[0], g.y - camera[1], g.width, g.height))
+        display.blit(ground_img, (g.x - camera[0], g.y - camera[1], g.width, g.height))
     StaminaHUD.render(display)  # HUD render
 
     surf = pg.transform.scale(display, WIN_SIZE)
