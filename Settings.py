@@ -3,7 +3,7 @@ import pygame as pg
 WIN_SIZE = (960, 600)
 WIN_RES = (WIN_SIZE[0] // 3, WIN_SIZE[1] // 3)
 J = WIN_SIZE[0] // WIN_RES[0]
-print(WIN_RES[1] // 1.5, WIN_RES)
+
 
 screen = pg.display.set_mode(WIN_SIZE)
 display = pg.Surface(WIN_RES)
@@ -27,7 +27,11 @@ stamina = 100
 ds = WIN_RES[0]*3 // 320
 ground = []
 ground_chunks = {}
+
 falling_blocks = []
+falling_blocks_chunk = {}
 momentum_fall = 0
-back_ground_img = [pg.image.load('data/assets/sprites/background_0.png').convert_alpha()]
-back_ground = {} # '-1': [[-320, 0], 0], '1': [[0, 0], 0]
+
+back_ground_img = [pg.image.load('data/assets/sprites/background_1.png').convert_alpha(), pg.image.load('data/assets/sprites/background_2.png').convert_alpha()]
+back_ground = {}
+ground_img = pg.image.load('data/assets/sprites/ground_1.png').convert_alpha()

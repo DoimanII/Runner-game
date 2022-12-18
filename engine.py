@@ -4,12 +4,15 @@ from Settings import *
 
 def get_mouse_pos():
     return (pg.mouse.get_pos()[0] // 2, pg.mouse.get_pos()[1] // 2)
+
+
 def chunk_generation(x, chunk_size):
     chunk_data = []
     for x_pos in range(int(chunk_size)):
-        t_x = (x*chunk_size+x_pos)*33 # 32 !!!
-        chunk_data.append(int(t_x))
+        t_x = (x * chunk_size + x_pos) * 33  # 32 !!!
+        chunk_data.append(t_x)
     return chunk_data
+
 
 def load_animation(path):
     global animation_higher_database
@@ -69,7 +72,7 @@ class physics():
         hit_list = self.__test_collide(tiles, entities)
         for tile in hit_list:
             if movement[1] > 0:
-                if tile[1] != 'human': # Это плохая штука!
+                if tile[1] != 'human':  # Это плохая штука!
                     self.rect.bottom = tile[0].top
                 collision_type['bottom'] = True
             if movement[1] < 0:
@@ -115,7 +118,7 @@ class Entity():
         self.obj.rect.width = width
         self.obj.rect.height = height
 
-    #def move(self, movement, tiles):
+    # def move(self, movement, tiles):
     #    self.obj.move(movement, tiles)
 
     def collide_rect(self, rect):
