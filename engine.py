@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 from Settings import *
 
@@ -6,11 +8,25 @@ def get_mouse_pos():
     return (pg.mouse.get_pos()[0] // 2, pg.mouse.get_pos()[1] // 2)
 
 
-def chunk_generation(x, chunk_size):
+def chunk_generation(x, chunk_size=None, type='fal'):
+    structures = {0: [
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', 'B', ''],
+        ['', 'B', 'B', 'B', 'B']
+    ]}
     chunk_data = []
-    for x_pos in range(int(chunk_size)):
-        t_x = (x * chunk_size + x_pos) * 33  # 32 !!!
-        chunk_data.append(t_x)
+    if type == 'fal':
+        for x_pos in range(int(chunk_size)):
+            t_x = (x * chunk_size + x_pos) * 32  # 32 !!!
+            t_y = 160*x_pos
+            chunk_data.append((t_x, t_y))
+    if type == 'block':
+        for x_pos in range(int(chunk_size)):
+            if random.choice([0,0,1,0]) == 1: # Лучше заранее написать все варианты структур, а не вот это вот все..
+                t_x = (x * chunk_size + x_pos)*32
+                t_y = random.choice([160, 120])
+                chunk_data.append((t_x, t_y))
     return chunk_data
 
 

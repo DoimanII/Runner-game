@@ -25,6 +25,11 @@ speed = 1
 stamina = 100
 
 ds = WIN_RES[0]*3 // 320
+
+f_img = [pg.image.load('data/assets/sprites/falling_blocks/fallingBlock_0.png'), pg.image.load('data/assets/sprites/falling_blocks/fallingBlock_1.png')]
+back_ground_img = [pg.image.load('data/assets/sprites/background/background_1.png').convert_alpha(), pg.image.load('data/assets/sprites/background/background_2.png').convert_alpha()]
+ground_img = pg.image.load('data/assets/sprites/ground/ground_1.png').convert_alpha()
+
 ground = []
 ground_chunks = {}
 
@@ -32,6 +37,7 @@ falling_blocks = []
 falling_blocks_chunk = {}
 momentum_fall = 0
 
-back_ground_img = [pg.image.load('data/assets/sprites/background_1.png').convert_alpha(), pg.image.load('data/assets/sprites/background_2.png').convert_alpha()]
+entity_chunks = {}
+entity = []
+
 back_ground = {}
-ground_img = pg.image.load('data/assets/sprites/ground_1.png').convert_alpha()
