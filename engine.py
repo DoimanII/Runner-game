@@ -8,18 +8,18 @@ def get_mouse_pos():
     return (pg.mouse.get_pos()[0] // 2, pg.mouse.get_pos()[1] // 2)
 
 
-def chunk_generation(x, chunk_size=None, type='fal'):
+def chunk_generation(x, y=160, chunk_size=0, type='fal'):
     structures = {0: [
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', 'B', ''],
-        ['', 'B', 'B', 'B', 'B']
+        ['#', '#', '#', 'B', '#'],
+        ['#', '#', '#', '#', '#'],
+        ['#', '#', '#', 'B', '#'],
+        ['#', 'B', '#', 'B', '#']
     ]}
     chunk_data = []
     if type == 'fal':
         for x_pos in range(int(chunk_size)):
             t_x = (x * chunk_size + x_pos) * 32  # 32 !!!
-            t_y = 160*x_pos
+            t_y = y*x_pos
             chunk_data.append((t_x, t_y))
     if type == 'block':
         for x_pos in range(int(chunk_size)):
@@ -27,6 +27,15 @@ def chunk_generation(x, chunk_size=None, type='fal'):
                 t_x = (x * chunk_size + x_pos)*32
                 t_y = random.choice([160, 120])
                 chunk_data.append((t_x, t_y))
+    if type == 'blockG':
+        structure_type = random.randint(0, 0)
+        for y_inx, structure  in enumerate(structures[structure_type]):
+            for x_inx, block in enumerate(structure):
+                if block == 'B':
+                    t_x = (x+int(chunk_size)*32) + x_inx*32
+                    t_y = y+int(chunk_size)*32 + y_inx*32
+                    chunk_data.append((t_x, t_y))
+        print(chunk_data)
     return chunk_data
 
 

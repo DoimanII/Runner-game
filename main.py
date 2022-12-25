@@ -1,6 +1,5 @@
 import random
 import pygame as pg
-
 import sys
 from Settings import *
 import engine as E
@@ -16,25 +15,26 @@ StaminaHUD.color = (62, 162, 201)
 for x in range(6,0,-1):
     falling_blocks.append(E.Entity('falling_block', 32 * -x, -100 - x*160, 32, 300, image=f_img[random.choice([0,1])]))
 entity.append(E.Entity('block', 160, 160, 32, 32))
-
+print(E.chunk_generation(5, type='blockG'))
 while True:
+
     camera[0] = player.get_pos()[0] - WIN_RES[0] // 2 + player.get_size()[0] // 2
     display.fill('yellow')
     # World generation
     # Blocks
     bx = 3 + round(camera[0]/(32*5))
     if bx not in entity_chunks:
-        entity_chunks[bx] = E.chunk_generation(bx, 5, 'block')
+        entity_chunks[bx] = E.chunk_generation(bx, 5, type='blockG')
         for pos in entity_chunks[bx]:
             entity.append(E.Entity('block', *pos, 32, 32))
-            print(pos, player.get_pos())
+
     # Falling block
     fx = 0 + round(camera[0]/(32*12))
     if fx not in falling_blocks_chunk:
         falling_blocks_chunk[fx] = E.chunk_generation(fx, 12)
         for pos in falling_blocks_chunk[fx]:
-            falling_blocks.append(E.Entity('falling_block', pos[0], -1000-pos[1], 32, 300, image=f_img[random.choice([0,1])]))
-
+            #falling_blocks.append(E.Entity('falling_block', pos[0], -1000-pos[1], 32, 300, image=f_img[random.choice([0,1])]))
+            pass
     # BackGround and ground
     for x in range(ds):
         chunk_bg = x - 1 + round(camera[0]/(320))
@@ -55,6 +55,7 @@ while True:
         player.flip_x = True
         player.action = 'walk'
         player_movement[0] = 2 * speed
+
     if keys['up'] and can_input:
         if air_timer < 6:
             player_momentum = -6
@@ -76,7 +77,8 @@ while True:
     player_movement[1] = player_momentum
     tile_name, collision = player.obj.move(player_movement, ground, entity)
 
-    if collision['bottom'] or collision['top']:
+
+    if collision['bottom']:
         air_timer = 0
         player_momentum = 1
     else:
