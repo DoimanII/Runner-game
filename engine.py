@@ -3,18 +3,15 @@ import random
 import pygame as pg
 from Settings import *
 
-
+def print_game_text(display, text, pos, text_size, color=(255,255,255)):
+    font = pg.font.Font('data/assets/F77 Minecraft.ttf', text_size)
+    img = font.render(str(text), False, color)
+    display.blit(img, pos)
 def get_mouse_pos():
     return (pg.mouse.get_pos()[0] // 2, pg.mouse.get_pos()[1] // 2)
 
 
 def chunk_generation(x, y=160, chunk_size=0, type='fal'):
-    structures = {0: [
-        ['#', '#', '#', 'B', '#'],
-        ['#', '#', '#', '#', '#'],
-        ['#', '#', '#', 'B', '#'],
-        ['#', 'B', '#', 'B', '#']
-    ]}
     chunk_data = []
     if type == 'fal':
         for x_pos in range(int(chunk_size)):
@@ -28,14 +25,13 @@ def chunk_generation(x, y=160, chunk_size=0, type='fal'):
                 t_y = random.choice([160, 120])
                 chunk_data.append((t_x, t_y))
     if type == 'blockG':
-        structure_type = random.randint(0, 0)
+        structure_type = random.choice([0,0,0,1,1,0,2,0,3,0,4,5])
         for y_inx, structure  in enumerate(structures[structure_type]):
             for x_inx, block in enumerate(structure):
                 if block == 'B':
                     t_x = (x+int(chunk_size)*32) + x_inx*32
-                    t_y = y+int(chunk_size)*32 + y_inx*32
+                    t_y = y + y_inx*32
                     chunk_data.append((t_x, t_y))
-        print(chunk_data)
     return chunk_data
 
 
