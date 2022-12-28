@@ -18,7 +18,7 @@ for s in step_sound:
 
 E.load_animation('data/assets/')
 
-player = E.Entity('human', 0, WIN_RES[1] / 1.5, 26, 30)
+player = E.Entity('human', 0, WIN_RES[1] / 1.5, 14, 30)
 
 StaminaHUD = E.Entity('StaminaHUD', 25, 25, 100, 25)
 StaminaHUD.color = (62, 162, 201)
@@ -44,7 +44,7 @@ while True:
         momentum_fall += 1
         if momentum_fall > 10:
             momentum_fall = 10
-        fx = 0 + round(camera[0]/(32*12))
+        fx =0 + round(camera[0]/(32*12))
         if fx not in falling_blocks_chunk:
             falling_blocks_chunk[fx] = E.chunk_generation(fx, 160, 12,'fal')
             for pos in falling_blocks_chunk[fx]:
@@ -63,11 +63,11 @@ while True:
 
     # Input
     if keys['right'] and can_input: # X-axis
-        player.flip_x = False
+        player.flip_x = True
         player.action = 'walk'
         player_movement[0] = -2 * speed
     if keys['left'] and can_input:
-        player.flip_x = True
+        player.flip_x = False
         player.action = 'walk'
         player_movement[0] = 2 * speed
     if keys['up'] and can_input: # Y-axis
@@ -139,6 +139,7 @@ while True:
         E.print_game_text(display, 'SHIFT - бежать', (55, WIN_RES[1] // 2+48), 8, 'black')
     if not can_input:
         E.print_game_text(display, 'Game over', (100, WIN_RES[1]//2),16, 'black')
+
     surf = pg.transform.scale(display, WIN_SIZE)
     screen.blit(surf, (0, 0))
     pg.display.flip()
